@@ -40,13 +40,12 @@ public class KafkaContainerConfiguration {
 		return new DefaultKafkaConsumerFactory<Object, Object>(consumerProperties);
 	}
 
-	@Bean
+	//@Bean
 	public KafkaMessageListenerContainer<Object, Object> container() {
 		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),
 				new ContainerProperties(new TopicPartitionInitialOffset(this.properties.getTopic(), 0)));
 	}
-	
-	
+		
 	@Bean
 	public KafkaMessageListenerContainer<Object, Object> kafkaAuditContainer() {
 		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),

@@ -11,8 +11,9 @@ public class ProcessMessage {
 	
 	private static final Logger log = LoggerFactory.getLogger(ProcessMessage.class);
 
-	public Message<String> messageHandler(Message<String> msg) {
+	public Message<String> messageHandler(Message<String> msg) throws Exception {
         log.info("Received Mesage >>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+msg.getPayload());
-        return msg;
+        throw new Exception();
+        //return msg;
     }
 }
