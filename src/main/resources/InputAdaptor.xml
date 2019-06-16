@@ -13,7 +13,6 @@
 		<constructor-arg value="kafkaInitQueue"/>
 	</bean>
 
-	
 	<int-jms:message-driven-channel-adapter
 		id="kafkaInit" channel="activeMqChannel-Audit"
 		destination="kafkaInitQueue" acknowledge="transacted"
@@ -28,9 +27,7 @@
 		auto-startup="true" channel="toKafkaChannel-Audit" topic="applicationTopic"
 		sync="true" partition-id="0" message-key="inputAdaptor">
 	</int-kafka:outbound-channel-adapter>
-	
-
-	
+		
 	<int:channel id="activeMqChannel-Audit"></int:channel>
 	<int:channel id="toKafkaChannel-Audit"></int:channel>
 

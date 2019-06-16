@@ -106,41 +106,8 @@ public class Application {
 		return new DefaultKafkaProducerFactory<String, String>(producerProperties);
 	}
 
-    @ServiceActivator(inputChannel= "fromKafka",outputChannel="activeMqChannel")
-    public Message<String> messageHandler(Message<String> msg) {
-        log.info("Received Mesage >>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+msg.getPayload());
-        return msg;
-    }
+  
 	
-	
-	@Bean
-	public ConsumerFactory<Object, Object> consumerFactory(KafkaProperties properties) {
-		Map<String, Object> consumerProperties = properties.buildConsumerProperties();
-		consumerProperties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 15000);
-		return new DefaultKafkaConsumerFactory<Object, Object>(consumerProperties);
-	}
-
-	@Bean
-	public ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
-			ConcurrentKafkaListenerContainerFactoryConfigurer configurer) {
-		ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<Object, Object>();
-		configurer.configure(factory, consumerFactory(kafkaProperties));
-		return factory;
-	}
-	@Bean
-	public KafkaMessageListenerContainer<Object, Object> container() {
-		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),new ContainerProperties(new TopicPartitionInitialOffset(this.properties.getTopic(), 0)));
-	}
-
-	/*
-	 * @Bean public KafkaMessageDrivenChannelAdapter<Object, Object> adapter() {
-	 * KafkaMessageDrivenChannelAdapter<Object, Object>
-	 * kafkaMessageDrivenChannelAdapter = new
-	 * KafkaMessageDrivenChannelAdapter<Object, Object>( container());
-	 * kafkaMessageDrivenChannelAdapter.setOutputChannel(fromKafka()); return
-	 * kafkaMessageDrivenChannelAdapter; }
-	 */
-
 	@Bean
 	public MessageChannel fromKafka() {
 		return new DirectChannel();
