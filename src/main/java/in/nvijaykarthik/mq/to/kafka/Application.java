@@ -69,7 +69,7 @@ import org.springframework.messaging.support.GenericMessage;
  */
 @SpringBootApplication
 @EnableConfigurationProperties(KafkaAppProperties.class)
-@ImportResource({"classpath:AuditAdaptor.xml","classpath:ExHandleAdaptor.xml","classpath:InputAdaptor.xml","classpath:OutputAdaptor.xml","classpath:ApplcationAdaptor.xml"})
+@ImportResource({"classpath:common.xml","classpath:AuditAdaptor.xml","classpath:ExHandleAdaptor.xml","classpath:InputAdaptor.xml","classpath:OutputAdaptor.xml","classpath:ApplicationAdaptor.xml"})
 @EnableIntegration
 public class Application {
 

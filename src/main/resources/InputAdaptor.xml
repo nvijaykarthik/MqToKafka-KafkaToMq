@@ -13,6 +13,10 @@
 		<constructor-arg value="kafkaInitQueue"/>
 	</bean>
 
+	<int:channel-interceptor pattern="*-Audit">
+		<int:wire-tap channel="toAuditChannel"/>
+	</int:channel-interceptor>
+	
 	<int-jms:message-driven-channel-adapter
 		id="kafkaInit" channel="activeMqChannel-Audit"
 		destination="kafkaInitQueue" acknowledge="transacted"
@@ -21,11 +25,7 @@
 	<int:recipient-list-router input-channel="activeMqChannel-Audit">
 		<int:recipient channel="toKafkaChannel-Audit"/>
 	</int:recipient-list-router>
-	
-	<int:channel-interceptor pattern="*-Audit">
-		<int:wire-tap channel="toAuditChannel"/>
-	</int:channel-interceptor>
-	
+
 	<int-kafka:outbound-channel-adapter
 		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
 		auto-startup="true" channel="toKafkaChannel-Audit" topic="applicationTopic"
