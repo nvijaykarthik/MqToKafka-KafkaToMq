@@ -13,9 +13,6 @@
 		<constructor-arg value="kafkaInitQueue"/>
 	</bean>
 
-	<int:channel-interceptor pattern="*-Audit">
-		<int:wire-tap channel="toAuditChannel"/>
-	</int:channel-interceptor>
 	
 	<int-jms:message-driven-channel-adapter
 		id="kafkaInit" channel="activeMqChannel-Audit"
@@ -32,21 +29,10 @@
 		sync="true" partition-id="0" message-key="inputAdaptor">
 	</int-kafka:outbound-channel-adapter>
 	
-	<int-kafka:outbound-channel-adapter
-		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
-		auto-startup="true" channel="toAuditChannel" topic="auditTopic"
-		sync="true" partition-id="0" message-key="inputAdaptor">
-	</int-kafka:outbound-channel-adapter>
-	
-	<int-kafka:outbound-channel-adapter
-		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
-		auto-startup="true" channel="toExceptionChannel" topic="exceptionTopic"
-		sync="true" partition-id="0" message-key="inputAdaptor">
-	</int-kafka:outbound-channel-adapter>
+
 	
 	<int:channel id="activeMqChannel-Audit"></int:channel>
 	<int:channel id="toKafkaChannel-Audit"></int:channel>
-	<int:channel id="toAuditChannel"></int:channel>
-	<int:channel id="toExceptionChannel"></int:channel>
+
 	
 </beans>
