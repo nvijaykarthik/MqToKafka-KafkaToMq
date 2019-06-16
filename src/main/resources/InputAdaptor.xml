@@ -23,7 +23,7 @@
 	</int:recipient-list-router>
 
 	<int-kafka:outbound-channel-adapter
-		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
+		id="kafkaApplicationOutboundChannelAdapter" kafka-template="kafkaTemplate"
 		auto-startup="true" channel="toKafkaChannel-Audit" topic="applicationTopic"
 		sync="true" partition-id="0" message-key="inputAdaptor">
 	</int-kafka:outbound-channel-adapter>

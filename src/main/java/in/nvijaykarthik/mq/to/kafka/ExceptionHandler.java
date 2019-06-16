@@ -16,7 +16,7 @@ public class ExceptionHandler {
 	}
 	
 	public void saveInLog(Message<String> message) {
-		log.info("Saving the message to the DB");
+		log.info("Saving the message to the Log");
 		
 	}
 }

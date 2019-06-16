@@ -14,7 +14,7 @@
 		<int:channel id="processMessageChannel-Audit"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
-		id="kafkaListener" listener-container="kafkaApplicationContainer" auto-startup="true"
+		id="kafkaApplicationListener" listener-container="kafkaApplicationContainer" auto-startup="true"
 		phase="100" send-timeout="5000" mode="record" channel="processMessageChannel-Audit" error-channel="toExceptionChannel"/>
 		
 	<int:service-activator input-channel="processMessageChannel-Audit" ref="processMessage" output-channel="outputAdaptorChannel-Audit"/> 

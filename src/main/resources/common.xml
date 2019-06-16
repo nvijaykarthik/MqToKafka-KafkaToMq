@@ -16,13 +16,13 @@
 	</int:channel-interceptor>
 
 	<int-kafka:outbound-channel-adapter
-		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
+		id="kafkaAuditOutboundChannelAdapter" kafka-template="kafkaTemplate"
 		auto-startup="true" channel="toAuditChannel" topic="auditTopic"
 		sync="true" partition-id="0" message-key="inputAdaptor">
 	</int-kafka:outbound-channel-adapter>
 
 	<int-kafka:outbound-channel-adapter
-		id="kafkaOutboundChannelAdapter" kafka-template="kafkaTemplate"
+		id="kafkaExceptionOutboundChannelAdapter" kafka-template="kafkaTemplate"
 		auto-startup="true" channel="toExceptionChannel"
 		topic="exceptionTopic" sync="true" partition-id="0"
 		message-key="inputAdaptor">

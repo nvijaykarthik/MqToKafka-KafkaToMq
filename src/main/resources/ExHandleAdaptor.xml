@@ -14,7 +14,7 @@
 	<int:channel id="toLoggerChannel-Audit"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
-		id="kafkaListener" listener-container="kafkaExContainer" auto-startup="true"
+		id="kafkaExceptionListener" listener-container="kafkaExContainer" auto-startup="true"
 		phase="100" send-timeout="5000" mode="record" channel="processExChannel-Audit" error-channel="toLoggerChannel-Audit"/>
 		
 	<int:service-activator input-channel="processExChannel-Audit" ref="exceptionHandler" method="saveInDb"/> 
