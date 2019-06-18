@@ -63,4 +63,10 @@ public class KafkaContainerConfiguration {
 		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),
 				new ContainerProperties(new TopicPartitionInitialOffset("applicationTopic", 0)));
 	}
+	
+	@Bean
+	public KafkaMessageListenerContainer<Object, Object> kafkaOutputContainer() {
+		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),
+				new ContainerProperties(new TopicPartitionInitialOffset("outputToMq", 0)));
+	}
 }

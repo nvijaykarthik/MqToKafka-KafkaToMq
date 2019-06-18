@@ -12,12 +12,19 @@
 
 
 		<int:channel id="processMessageChannel-Audit"></int:channel>
+		<int:channel id="toOutputMessageChannel-Audit"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
 		id="kafkaApplicationListener" listener-container="kafkaApplicationContainer" auto-startup="true"
 		phase="100" send-timeout="5000" mode="record" channel="processMessageChannel-Audit" error-channel="toExceptionChannel"/>
 		
-	<int:service-activator input-channel="processMessageChannel-Audit" ref="processMessage" output-channel="outputAdaptorChannel-Audit"/> 
+	<int:service-activator input-channel="processMessageChannel-Audit" ref="processMessage" output-channel="toOutputMessageChannel-Audit"/> 
+	
+	<int-kafka:outbound-channel-adapter
+		id="kafkaOutputOutboundChannelAdapter" kafka-template="kafkaTemplate"
+		auto-startup="true" channel="toOutputMessageChannel-Audit" topic="outputToMq"
+		sync="true" partition-id="0" message-key="applicationAdaptor">
+	</int-kafka:outbound-channel-adapter>
 	
 	
 </beans>
