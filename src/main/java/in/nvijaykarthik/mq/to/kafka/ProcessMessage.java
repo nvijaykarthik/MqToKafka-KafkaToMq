@@ -13,7 +13,7 @@ public class ProcessMessage {
 
 	public Message<String> messageHandler(Message<String> msg) throws Exception {
         log.info("Received Mesage >>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+msg.getPayload());
-        throw new Exception();
-        //return msg;
+        //throw new Exception();
+        return msg;
     }
 }
