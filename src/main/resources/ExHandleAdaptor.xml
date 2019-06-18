@@ -9,15 +9,15 @@
 		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
 
 
-	<int:channel id="processExChannel-Audit"></int:channel>
+	<int:channel id="processExChannel"></int:channel>
 	
-	<int:channel id="toLoggerChannel-Audit"></int:channel>
+	<int:channel id="toLoggerChannel"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
 		id="kafkaExceptionListener" listener-container="kafkaExContainer" auto-startup="true"
-		phase="100" send-timeout="5000" mode="record" channel="processExChannel-Audit" error-channel="toLoggerChannel-Audit"/>
+		phase="100" send-timeout="5000" mode="record" channel="processExChannel" error-channel="toLoggerChannel"/>
 		
-	<int:service-activator input-channel="processExChannel-Audit" ref="exceptionHandler" method="saveInDb"/> 
-	<int:service-activator input-channel="toLoggerChannel-Audit" ref="exceptionHandler" method="saveInLog"/> 
+	<int:service-activator input-channel="processExChannel" ref="exceptionHandler" method="saveInDb"/> 
+	<int:service-activator input-channel="toLoggerChannel" ref="exceptionHandler" method="saveInLog"/> 
 	
 </beans>
