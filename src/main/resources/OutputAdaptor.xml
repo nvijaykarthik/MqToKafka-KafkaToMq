@@ -18,7 +18,7 @@
 		id="kafkaOutputListener" listener-container="kafkaOutputContainer" auto-startup="true"
 		phase="100" send-timeout="5000" mode="record" channel="outputAdaptorChannel-Audit" error-channel="toExceptionChannel"/>
 		
-	
+
 	<int-jms:outbound-channel-adapter
 		id="kafkaOut"
 		destination-name="kafkaOutQueue"

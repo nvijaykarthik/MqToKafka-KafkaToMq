@@ -22,7 +22,7 @@
 	</int-kafka:outbound-channel-adapter>
 
 	<int-kafka:outbound-channel-adapter
-		id="kafkaExceptionOutboundChannelAdapter" kafka-template="kafkaTemplate"
+		id="kafkaExceptionOutboundChannelAdapter" kafka-template="kafkaExTemplate"
 		auto-startup="true" channel="toExceptionChannel"
 		topic="exceptionTopic" sync="true" partition-id="0"
 		message-key="inputAdaptor">

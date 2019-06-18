@@ -3,6 +3,9 @@ package in.nvijaykarthik.mq.to.kafka;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -54,7 +57,10 @@ public class KafkaContainerConfiguration {
 	
 	@Bean
 	public KafkaMessageListenerContainer<Object, Object> kafkaExContainer() {
-		return new KafkaMessageListenerContainer<Object, Object>(consumerFactory(kafkaProperties),
+		Map<String, Object> consumerProps = kafkaProperties.buildProducerProperties();
+		consumerProps.put("key.deserializer", StringDeserializer.class);
+		consumerProps.put("value.deserializer", JavaDeSerializer.class);
+		return new KafkaMessageListenerContainer<Object, Object>(new DefaultKafkaConsumerFactory<Object, Object>(consumerProps),
 				new ContainerProperties(new TopicPartitionInitialOffset("exceptionTopic", 0)));
 	}
 	
