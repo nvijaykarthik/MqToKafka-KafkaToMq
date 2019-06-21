@@ -8,20 +8,28 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
 
-	<bean id="kafkaOutQueue" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg value="kafkaOutQueue"/>
+	<bean id="kafkaOutQueue"
+		class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="kafkaOutQueue" />
 	</bean>
-	
+	<int:channel id="outputInitHeaderChannel"></int:channel>
+
 	<int:channel id="outputAdaptorChannel-Audit"></int:channel>
-	
+
 	<int-kafka:message-driven-channel-adapter
-		id="kafkaOutputListener" listener-container="kafkaOutputContainer" auto-startup="true"
-		phase="100" send-timeout="5000" mode="record" channel="outputAdaptorChannel-Audit" error-channel="toExceptionChannel"/>
-		
+		id="kafkaOutputListener" listener-container="kafkaOutputContainer"
+		auto-startup="true" phase="100" send-timeout="5000" mode="record"
+		channel="outputInitHeaderChannel" error-channel="toExceptionChannel" />
+
+	<int:header-enricher
+		input-channel="outputInitHeaderChannel"
+		output-channel="outputAdaptorChannel-Audit">
+		<int:header name="component" value="OUTPUT"
+			overwrite="true"></int:header>
+	</int:header-enricher>
 
 	<int-jms:outbound-channel-adapter
-		id="kafkaOut"
-		destination-name="kafkaOutQueue"
+		id="kafkaOut" destination-name="kafkaOutQueue"
 		channel="outputAdaptorChannel-Audit" />
-	
+
 </beans>

@@ -83,7 +83,7 @@ public class Application {
 
 
 	public static void main(String[] args) throws Exception {
-		new SpringApplicationBuilder(Application.class).web(false).run(args);
+		new SpringApplicationBuilder(Application.class).run(args);
 	}
 
 	private void runDemo(ConfigurableApplicationContext context) {

@@ -11,13 +11,18 @@
 		http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd">
 
 
+		<int:channel id="appInitHeaderChannel"></int:channel>
 		<int:channel id="processMessageChannel-Audit"></int:channel>
 		<int:channel id="toOutputMessageChannel-Audit"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
 		id="kafkaApplicationListener" listener-container="kafkaApplicationContainer" auto-startup="true"
-		phase="100" send-timeout="5000" mode="record" channel="processMessageChannel-Audit" error-channel="toExceptionChannel"/>
-		
+		phase="100" send-timeout="5000" mode="record" channel="appInitHeaderChannel" error-channel="toExceptionChannel"/>
+	
+	<int:header-enricher input-channel="appInitHeaderChannel" output-channel="processMessageChannel-Audit">
+			<int:header name="component" value="APPLICATION" overwrite="true"></int:header>
+	</int:header-enricher>
+	
 	<int:service-activator input-channel="processMessageChannel-Audit" ref="processMessage" output-channel="toOutputMessageChannel-Audit"/> 
 	
 	<int-kafka:outbound-channel-adapter

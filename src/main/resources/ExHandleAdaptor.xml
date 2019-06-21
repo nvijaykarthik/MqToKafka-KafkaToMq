@@ -4,20 +4,28 @@
 	xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
 	xmlns:int="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/integration/kafka http://www.springframework.org/schema/integration/kafka/spring-integration-kafka.xsd
-		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-4.3.xsd">
 
 
 	<int:channel id="processExChannel"></int:channel>
-	
+	<int:channel id="updateAudit-Audit"></int:channel>
 	<int:channel id="toLoggerChannel"></int:channel>
+	
+	<int:channel id="exHeaderEnricher"></int:channel>
 
 	<int-kafka:message-driven-channel-adapter
 		id="kafkaExceptionListener" listener-container="kafkaExContainer" auto-startup="true"
-		phase="100" send-timeout="5000" mode="record" channel="processExChannel" error-channel="toLoggerChannel"/>
-		
-	<int:service-activator input-channel="processExChannel" ref="exceptionHandler" method="saveInDb"/> 
+		phase="100" send-timeout="5000" mode="record" channel="exHeaderEnricher" error-channel="toLoggerChannel"/>
+	
+	<int:header-enricher input-channel="exHeaderEnricher" output-channel="processExChannel">
+			<int:header name="component" value="EXCEPTION" overwrite="true"></int:header>
+	</int:header-enricher>
+	
+	<int:service-activator input-channel="processExChannel" ref="exceptionHandler" method="saveInDb" output-channel="updateAudit-Audit"/>
 	<int:service-activator input-channel="toLoggerChannel" ref="exceptionHandler" method="saveInLog"/> 
+
+	<int:bridge input-channel="updateAudit-Audit" output-channel="nullChannel"></int:bridge>
 	
 </beans>
